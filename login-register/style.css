@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  background: #ebebeb;
+}
+.container {
+  border-radius: 15px;
+  padding: 8px 14px;
+  border: 10px solid white;
+  margin: 20px 20px 20px 20px;
+  height: fit-content;
+  background-color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 35em;
+  min-height: 30em;
+}
+
+.imgtitle {
+  width: 20%;
+  position: absolute;
+  top: 7%;
+  max-height: 50px;
+  max-width: 280px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.title {
+  font-family: "Verdana";
+  padding-left: 50px;
+  margin-top: 20px;
+  color: #555555;
+  font-size: x-large;
+}
+
+.h3 {
+  padding-left: 50px;
+  color: #555555;
+  font-size: medium;
+  padding-top: 20px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.inp {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  margin-left: 50px;
+  height: 50px;
+  width: 450px;
+  font-size: 20px;
+  padding-left: 20px;
+  border-radius: 10px;
+  border: 2px solid #ebebeb !important;
+}
+
+.inp:focus {
+  border: 2px solid #00b4cc !important;
+  outline: none;
+}
+
+.btn {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  margin-left: 50px;
+  margin-top: 20px;
+  width: 150px;
+  height: 50px;
+  font-size: large;
+  color: white;
+  background-color: #333333;
+  border-radius: 50px;
+  outline: none !important;
+}
+.btn2 {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  margin-left: 50px;
+  margin-top: 40px;
+  width: 150px;
+  height: 50px;
+  font-size: large;
+  color: white;
+  background-color: #333333;
+  border-radius: 50px;
+  outline: none !important;
+}
+.btn:hover {
+  background-color: #00b4cc !important;
+}
+
+.btn2:hover {
+  background-color: #00b4cc !important;
+}
+
+.link {
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+
+.bar {
+  padding: 10px;
+  margin: 10px;
+  margin-right: 30px;
+  margin-left: 50px;
+  color: #333;
+  background: #fafafa;
+  border: 1px solid #ccc;
+}
+
+.error {
+  color: #ba3939;
+  background: #ffe0e0;
+  border: 1px solid #a33a3a;
+}
