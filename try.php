@@ -3,7 +3,9 @@ require_once "OpenAI.php";
 require_once "login-register/connect.php";
 $result = mysqli_query($conn, "SELECT * FROM users WHERE email = 'bouhaa@gmail.com'");
 $row = mysqli_fetch_assoc($result);
-$instance = new OpenAI(secretKey: 'Bearer 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');
+//key is shown in the next line, free subscription get you a key with limited number of calls, I'll leave it here
+// for anywone who wants to run the project and have access to the open ai chatbot
+$instance = new OpenAI(secretKey: 'Bearer sk-K2nesE84LuXTUqT8FQ1c' .'T3BlbkFJlaf7vlQUV0xojo2vOVt9');
 
 /*
 $key = $row['name'];
