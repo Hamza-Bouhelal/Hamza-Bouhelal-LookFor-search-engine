@@ -17,6 +17,21 @@ body {
   min-height: 30em;
 }
 
+.container2 {
+  border-radius: 15px;
+  padding: 8px 14px;
+  border: 10px solid white;
+  margin: 20px 20px 20px 20px;
+  height: fit-content;
+  background-color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 35em;
+  min-height: 25em;
+}
+
 .imgtitle {
   width: 20%;
   position: absolute;
@@ -106,6 +121,7 @@ body {
 
 .link {
   text-decoration: none;
+  color: #00b4cc;
 }
 .link:hover {
   text-decoration: underline;

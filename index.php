@@ -22,12 +22,14 @@ function checkLogin(){
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="jquery-3.6.0.min.js"></script>
   </head>
-
 <body>
   <button style="" class="btn2 borderbutton" id="register" onclick="changeloc('register');">Register</button>
   <button  style="" class="btn borderbutton" id="login" onclick="changeloc('login');">Login</button>
   <h4  style="display: none;" class="welcome" id="welcome"></h4>
-  <button  style="display: none" class="btn borderbutton" id="logout" onclick="changeloc('logout');">Logout</button>
+  <div id="cont">
+    <button  style="display: none" class="btn borderbutton" id="logout" onclick="changeloc('logout');">Logout</button>
+    <a id="changepass" style="display: <?php if(checkLogin()) { echo "block";} else {echo "none";}?>"class="changePass" href="login-register/changePassword.php">Change Password</a>
+  </div>
   <center>
     <img src="login-register/images/title.png" class="imgtitle" onclick="goback()" />
   </center>
@@ -44,9 +46,7 @@ function checkLogin(){
     <div class="autocomplete_item" onclick="autocomplete(this)">item</div>
     <div class="autocomplete_item" onclick="autocomplete(this)">item</div>
     <div class="autocomplete_item" onclick="autocomplete(this)">item</div>
-
   </div>
-
   <br />
   <br />
   <br />
@@ -448,8 +448,39 @@ function checkLogin(){
             oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"' class="input-element"
             readonly></textarea>
           <br />
-          <img src="login-register/images/copy.png" class="copytext" onclick="copytranslatedtext()" />
+          <img src="login-register/images/copy.png" class="copytext2" onclick="copytranslatedtext()" />
         </center>
+        <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      </div>
+    </div>
+    <input type="radio" name="tabs" id="tabfive"
+      onclick="changetab('grammar');document.getElementById('transfromgr').value = document.getElementById('searchinput').value;searchgrammar();">
+    <label for="tabfive">Spell Check</label>
+    <div class="tab">
+    <div style="min-height: 70px"></div>
+      <div class="grammar">
+        <center>
+          <span style="display: inline"><button class="btn_grammar" onclick="searchgrammar()">Check Spelling</button><div class="score" id="score"></div> </span>
+          <br/>
+          <textarea placeholder="Enter or paste text here" id="transfromgr" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+            class="input-element2"></textarea>
+            <p id="transtogr" class="input-elemen2"></p>
+            <img src="login-register/images/copy.png" class="copytext" onclick="copycheckedtext()" />
+
+        </center>
+        <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       </div>
     </div>
   </div>
@@ -490,6 +521,7 @@ function checkLogin(){
 <script>
   var logged = false;
 function onloaded(){
+  textInp.focus();
     var isloggedin = <?php $t = checkLogin(); echo $t; ?>;
      if (isloggedin == 1) {
        logged = true;
@@ -517,5 +549,99 @@ function onloaded(){
     }
 }
   window.onload= onloaded();
+  function update_search_history() {
+  var user_id = <?php echo $_SESSION['user_id']; ?>;
+  if (logged) {
+    if(! (<?php echo json_encode( $_SESSION['user_data']); ?>).toLowerCase().includes(textInp.value.toLowerCase())){
+      $.ajax({
+        url: "UpdateSearchHistory.php?query=" + textInp.value + "&user_id=" + user_id,
+      }).done(function(data) {
+        console.log(data);
+      });
+    }
+  }
+}
+function getdata(){
+  return <?php 
+    if(isset($_SESSION['user_data'])){
+      echo json_encode($_SESSION['user_data']);
+    } else {
+      echo json_encode("");
+    }
+  ?>;
+}
+textInp.onkeypress = function (e) {
+  if (e.key == "Enter") {
+    hide_suggestions();
+    glob_search();
+  } else if (e.key == " " && textInp.value.replace(" ", "") != "") {
+    fetch(
+      "https://bing-autosuggest1.p.rapidapi.com/suggestions?q=" +
+        textInp.value.replace(" ", "%20"),
+      {
+        method: "GET",
+        headers: {
+          "x-bingapis-sdk": "true",
+          "x-rapidapi-host": "bing-autosuggest1.p.rapidapi.com",
+          "x-rapidapi-key":
+            "b2f149e06bmsh8efd678074bb06ap1105f6jsnd63b170f9f28",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        var autoitems = document.getElementsByClassName("autocomplete_item");
+        var tempp = 0;
+        if(logged){
+          var data = getdata();
+          if(data !== ""){
+            var autocompletelist = data.split("*-sep-*");
+            for (var j = 0; j < autocompletelist.length; j++) {
+              if (autocompletelist[j].toLowerCase().includes(textInp.value.toLowerCase())) {
+                autoitems[tempp].innerHTML = autocompletelist[j];
+                autoitems[tempp].style.color = "#9963b3";
+                autoitems[tempp].style.display = "block";
+                tempp++;
+              }
+              if(tempp == 3){
+                break;
+              }
+            }
+          }
+        }
+        var k = 0;
+        for (var i = tempp; i < autoitems.length; i++) {
+          autoitems[i].style.color = "#000000";
+          if (
+            i + k >=
+            response["suggestionGroups"][0]["searchSuggestions"].length
+          ) {
+            break;
+          }
+          autoitems[i].innerHTML =
+            response["suggestionGroups"][0]["searchSuggestions"][i + k][
+              "query"
+            ];
+          autoitems[i].style.display = "flex";
+        }
+        if (response["suggestionGroups"][0]["searchSuggestions"].length == 0) {
+          hide_suggestions();
+        } else {
+          if (looking) {
+            document.getElementsByClassName("wrap")[0].style.top = "16.7%";
+          } else {
+            document.getElementsByClassName("wrap")[0].style.top = "52%";
+          }
+        }
+        sugf_displ = true;
+        document.getElementById("autocomplete").style.display = "block";
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  } else {
+    hide_suggestions();
+  }
+};
 </script>
 </html>

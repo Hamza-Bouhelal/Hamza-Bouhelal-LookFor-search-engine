@@ -66,6 +66,9 @@ body {
   user-select: none;
 }
 
+.perso_autocomplete {
+  color: purple;
+}
 .autocomplete_item:hover {
   background-color: rgba(140, 140, 140, 0.65) !important;
 }
@@ -139,7 +142,25 @@ body {
   cursor: pointer;
   right: 0;
 }
+.btn_grammar {
+  font-family: "Sansita Swashed", cursive;
+  margin-bottom: 15px;
+  border: 2px solid #00b4cc;
+  border-radius: 15px;
+  background-color: #f2f2f2;
+  color: black;
+  padding: 5px 27px;
+  font-size: 16px;
+  cursor: pointer;
+  right: 0;
 
+}
+
+.score {
+  font-family: "Sansita Swashed", cursive;
+  font-size: 20px;
+  color: black;
+}
 .btn2 {
   font-family: "Sansita Swashed", cursive;
   margin-top: 15px;
@@ -352,6 +373,11 @@ I added some edits to make it match my layout */
   overflow-x: hidden;
 }
 
+.grammar {
+  border-width: 2px;
+  overflow-x: hidden;
+}
+
 .left {
   left: 0;
 }
@@ -365,6 +391,22 @@ I added some edits to make it match my layout */
   width: 500px;
   min-height: 100px;
   resize: none;
+}
+
+.input-element2 {
+  border-radius: 8px;
+  font-size: 20px;
+  width:35em;
+  min-height: 100px;
+  max-width: 1100px;
+  min-width: 500px;
+  border-color: #00b4cc;
+  border-width: 2px;
+}
+
+.input-element2:focus {
+  border-width: 3px;
+  border-color: #00b4cc;
 }
 
 .img_container {
@@ -421,12 +463,20 @@ I added some edits to make it match my layout */
   text-decoration-color: #00b4cc;
 }
 .copytext {
-  width: 5%;
+  width: 70px;
+  height: auto;
+  cursor: pointer;
+}
+.copytext2 {
+  padding-left: 50px;
+  padding-top: 8px;
+  width: 70px;
+  height: auto;
   cursor: pointer;
 }
 
 .copytext:hover {
-  width: 7%;
+  width: 80px;
 }
 
 
@@ -581,4 +631,20 @@ I added some edits to make it match my layout */
   
   font-size: small;
   word-wrap: break-word;
+}
+
+.error_word {
+  color: #ff0000;
+  text-decoration: underline;
+}
+
+.changePass {
+  font-family: "Sansita Swashed", cursive;
+  margin-top: 60px;
+  margin-right: 28px;
+  position: absolute;
+  color: #00b4cc;
+  font-size: 14px;
+  cursor: pointer;
+  right: 0;
 }

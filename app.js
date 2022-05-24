@@ -246,6 +246,11 @@ function Searchtext() {
   if (textInp.value.includes("?")) {
     document.getElementsByClassName("use_chat")[0].style.display = "block";
   }
+  try {
+    update_search_history();
+  } catch {
+    console.log("Not logged in... can't update search history");
+  }
   looking = true;
   var add_links = document.getElementsByClassName("additional_link");
   for (var i = 0; i < add_links.length; i++) {
@@ -371,60 +376,7 @@ function autocomplete(element) {
   looking = true;
   Searchtext();
 }
-textInp.onkeypress = function (e) {
-  if (e.key == "Enter") {
-    hide_suggestions();
-    glob_search();
-  } else if (e.key == " " && textInp.value.replace(" ", "") != "") {
-    fetch(
-      "https://bing-autosuggest1.p.rapidapi.com/suggestions?q=" +
-        textInp.value.replace(" ", "%20"),
-      {
-        method: "GET",
-        headers: {
-          "x-bingapis-sdk": "true",
-          "x-rapidapi-host": "bing-autosuggest1.p.rapidapi.com",
-          "x-rapidapi-key":
-            "b2f149e06bmsh8efd678074bb06ap1105f6jsnd63b170f9f28",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        var autoitems = document.getElementsByClassName("autocomplete_item");
-        var k = 0;
-        for (var i = 0; i < autoitems.length; i++) {
-          if (
-            i + k >=
-            response["suggestionGroups"][0]["searchSuggestions"].length
-          ) {
-            break;
-          }
-          autoitems[i].innerHTML =
-            response["suggestionGroups"][0]["searchSuggestions"][i + k][
-              "query"
-            ];
-          autoitems[i].style.display = "flex";
-        }
-        if (response["suggestionGroups"][0]["searchSuggestions"].length == 0) {
-          hide_suggestions();
-        } else {
-          if (looking) {
-            document.getElementsByClassName("wrap")[0].style.top = "16.7%";
-          } else {
-            document.getElementsByClassName("wrap")[0].style.top = "52%";
-          }
-        }
-        sugf_displ = true;
-        document.getElementById("autocomplete").style.display = "block";
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  } else {
-    hide_suggestions();
-  }
-};
+
 function check() {
   if (textInp.value.length == 0) {
     hide_suggestions();
@@ -826,6 +778,9 @@ function glob_search() {
     searchimg();
   } else if (currenttab == "translate") {
     translatetext();
+  } else if (currenttab == "grammar") {
+    alert("here");
+    searchgrammar();
   }
 }
 
@@ -1002,4 +957,49 @@ function usechatbot() {
   }
   document.getElementsByClassName("chat_input")[0].value = textInp.value;
   document.getElementsByClassName("send_button")[0].click();
+}
+
+function searchgrammar() {
+  if (textInp.value != "") {
+    const options = {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "X-RapidAPI-Host": "jspell-checker.p.rapidapi.com",
+        "X-RapidAPI-Key": "19583b2568msh73e468317dd5534p1d3ee8jsn7403c4037593",
+      },
+      body:
+        '{"language":"enUS","fieldvalues":"' +
+        document.getElementById("transfromgr").value +
+        '","config":{"forceUpperCase":false,"ignoreIrregularCaps":false,"ignoreFirstCaps":true,"ignoreNumbers":true,"ignoreUpper":false,"ignoreDouble":false,"ignoreWordsWithNumbers":true}}',
+    };
+
+    fetch("https://jspell-checker.p.rapidapi.com/check", options)
+      .then((response) => response.json())
+      .then((response) => {
+        var text = document.getElementById("transfromgr").value;
+        var score =
+          ((text.split(" ").length - parseInt(response["spellingErrorCount"])) /
+            text.split(" ").length) *
+          100;
+        document.getElementById("score").innerHTML =
+          "Score: " + score.toString().substring(0, 4) + "%";
+        var errors = response["elements"][0]["errors"];
+        for (var i = 0; i < errors.length; i++) {
+          text = text.replace(
+            errors[i]["word"].toString(),
+            "<span  class='error_word'>" +
+              errors[i]["suggestions"][0] +
+              "</span >"
+          );
+        }
+        document.getElementById("transtogr").innerHTML = text;
+      })
+      .catch((err) => console.error(err));
+  }
+}
+function copycheckedtext() {
+  navigator.clipboard.writeText(
+    document.getElementById("transtogr").textContent
+  );
 }
